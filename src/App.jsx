@@ -1,9 +1,17 @@
 import "./App.css";
 import articles from './data/articles.json'
 import { useState } from "react";
+import { Articles } from "./components/Articles/Articles";
+import Controls from "./components/Controls/Controls";
+import Progress from "./components/Progress/Progress";
 
 export default function App() {
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const visibleArtices = articles[selectedIdx];
+  const isFirst = selectedIdx === 0;
+  const isLast = selectedIdx === articles.length - 1;
+  const current = selectedIdx + 1;
+  const total = articles.length;
 
   const handlePrev = () => {
     setSelectedIdx(selectedIdx - 1);
@@ -16,18 +24,12 @@ export default function App() {
 
   return (
     <>
-      <div>
-        <button onClick={handlePrev}>Prev</button>
-        <button onClick={handleNext}>Next</button>
-      </div>
-      <p>
+      <Controls first={isFirst} last={isLast} onPrev={handlePrev} onNext={handleNext} />
+      <Progress current={current} total={total} />
+      {/* <p>
         {selectedIdx + 1}/{articles.length}
-      </p>
-      <div>
-        <h2>{articles[selectedIdx].title}</h2>
-        <p>{articles[selectedIdx].desc}</p>
-        <img src={articles[selectedIdx].text} alt={articles[selectedIdx].title} width='400px'/>
-      </div>
+      </p> */}
+      <Articles article={visibleArtices} />
     </>
   );
 }
